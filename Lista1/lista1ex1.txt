@@ -1,0 +1,10 @@
+1. GLSL é uma linguagem de programação - baseada em C - associada
+a OpenGL para desenvolvimento de shaders que manipulam vértices e 
+pixels, e calculam iluminação. 
+
+Os shaders que obrigatórios são o vertex shaders e o fragment
+shaders. Os vertex shaders processam vértices - processa cor, 
+posição, coordenadas de textura, e aplica tranformações na 
+geometria -, enquanto os fragment shaders processam áreas; ele é 
+executado para cada fragmento que será desenhado na tela, dando 
+textura, iluminação e sombreamento.

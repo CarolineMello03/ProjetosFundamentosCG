@@ -1,0 +1,5 @@
+3. Vertex buffer objects (VBOs) buffers que enviam dados dos 
+vértices à GPU (arrays de dados), enquanto os vertex array 
+objects (VAOs) fazem a ligação dos atributos de um vértice 
+(posição, cores, normais) e definem qual o VBO que será usado, a 
+localização dos dados desse VBO e qual o formato dos dados.

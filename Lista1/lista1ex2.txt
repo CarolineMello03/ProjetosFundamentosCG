@@ -1,0 +1,4 @@
+2. As primitivas gráficas são os elementos básicos para a 
+construção de objetos visuais. São elas: vértices/pontos, linhas 
+e faces/polígonos. O svértices são armazenados por meio de 
+buffers.
