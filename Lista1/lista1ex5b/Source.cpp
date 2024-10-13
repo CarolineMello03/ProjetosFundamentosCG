@@ -68,7 +68,7 @@ int main()
 //#endif
 
 	// Criação da janela GLFW
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lista1_ex5_a", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lista1_ex5_b", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
 	// Fazendo o registro da função de callback para a janela GLFW
@@ -126,8 +126,9 @@ int main()
 		glUniform4f(colorLoc, 0.0f, 0.0f, 1.0f, 1.0f); //enviando cor para variável uniform inputColor
 
 		// Chamada de desenho - drawcall
-		// Poligono Preenchido - GL_TRIANGLES
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// Contorno - GL_LINE_LOOP
+		glDrawArrays(GL_LINE_LOOP, 0, 3);
+		glDrawArrays(GL_LINE_LOOP, 3, 3);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
