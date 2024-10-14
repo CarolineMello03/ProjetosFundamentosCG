@@ -1,0 +1,9 @@
+8.b) No vertex shader, ao declarar o vertexShaderSource, deve ser 
+adicionado o novo ponteiro, de posição 1. Ainda no 
+vertexShaderSource, criamos uma variável do tipo out para 
+exportar o atributo da cor. Além disso, no main(), fazemos com 
+que a variável que acabamos de criar receba os valores de cor.
+
+Por fim, no fragment shader, importamos o vetor de atributos de 
+cor e transformamos este vetor em vec4, com o valor faltante 
+(alpha) sendo 1.0, então color receberá este vetor.

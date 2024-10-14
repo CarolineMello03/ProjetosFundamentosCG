@@ -1,0 +1,13 @@
+8.a) Ao atribuir uma cor aos vértices, agora cada um deles
+carrega duas informações: posição/coordenadas e cor. Ou seja,
+além de setar as coordenadas (x, y, z), precisamos setar a 
+cor (r, g, b), totalizando 6 valores para cada vértice.
+
+No VBO, se for utilizado "sizeof(vertices)" ao enviar os dados 
+dos vértices, nada precisa ser alterado.
+
+Já no VAO, os ponteiros deverão ser alterados. Como agora são 6 
+valores por vértice, o quinto atributo (tamanho em bytes) do 
+glVertexAttribPointer() será "6 * sizeof(GLfloat)". Além disso, 
+deve ser criado mais um ponteiro (1), deslocando 3 posições (no 
+sexto parâmetro, será "(GLvoid*)(3 * sizeof(GLfloat))"

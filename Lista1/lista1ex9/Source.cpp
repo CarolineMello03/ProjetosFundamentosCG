@@ -33,23 +33,20 @@ const GLuint WIDTH = 600, HEIGHT = 600;
 // Código fonte do Vertex Shader (em GLSL): ainda hardcoded
 const GLchar* vertexShaderSource = "#version 400\n"
 "layout (location = 0) in vec3 position;\n"
-"layout (location = 1) in vec3 color;\n"
-"out vec3 vertexColor;\n"
 "void main()\n"
 "{\n"
 //...pode ter mais linhas de código aqui!
 "gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-"vertexColor = color;\n"
 "}\0";
 
 //Códifo fonte do Fragment Shader (em GLSL): ainda hardcoded
 const GLchar* fragmentShaderSource = "#version 400\n"
-"in vec3 vertexColor;\n"
+"uniform vec4 inputColor;\n"
 "out vec4 color;\n"
 "void main()\n"
 "{\n"
-"color = vec4(vertexColor, 1.0);\n"
-"}\0";
+"color = inputColor;\n"
+"}\n\0";
 
 // Função MAIN
 int main()
@@ -71,7 +68,7 @@ int main()
 //#endif
 
 	// Criação da janela GLFW
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lista1_ex5_a", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lista1_ex9", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
 	// Fazendo o registro da função de callback para a janela GLFW
@@ -126,15 +123,32 @@ int main()
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
-		glUniform4f(colorLoc, 0.0f, 0.0f, 1.0f, 1.0f); //enviando cor para variável uniform inputColor
+		glUniform4f(colorLoc, 1.0f, 0.7f, 0.0f, 1.0f); //enviando cor para variável uniform inputColor
 
 		// Chamada de desenho - drawcall
-		// Poligono Preenchido - GL_TRIANGLES
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		// Poligono Preenchido - GL_TRIANGLE_FAN
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 5);
+		glDrawArrays(GL_TRIANGLE_FAN, 4, 5);
+
+		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f);
+
+		glDrawArrays(GL_TRIANGLE_FAN, 9, 3);
+
+		glUniform4f(colorLoc, 0.0f, 0.0f, 0.0f, 1.0f);
 
 		// Chamada de desenho - drawcall
-		// Pontos - GL_POINTS
-		glDrawArrays(GL_POINTS, 0, 3);
+		// Contorno - GL_LINE_LOOP
+		glDrawArrays(GL_LINE_STRIP, 12, 5);
+
+		glUniform4f(colorLoc, 1.0f, 1.0f, 1.0f, 1.0f);
+
+		glDrawArrays(GL_TRIANGLE_FAN, 17, 4);
+		glDrawArrays(GL_TRIANGLE_FAN, 21, 4);
+
+		glUniform4f(colorLoc, 0.0f, 0.0f, 0.0f, 1.0f);
+
+		glDrawArrays(GL_TRIANGLE_FAN, 25, 4);
+		glDrawArrays(GL_TRIANGLE_FAN, 29, 4);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
@@ -217,12 +231,45 @@ int setupGeometry()
 	// Cada atributo do vértice (coordenada, cores, coordenadas de textura, normal, etc)
 	// Pode ser arazenado em um VBO único ou em VBOs separados
 	GLfloat vertices[] = {
-		//x    y    z    r    g    b
-		//T0
-		 0.0,  0.6, 0.0, 1.0, 0.0, 0.0,//p1
-		-0.6, -0.5, 0.0, 0.0, 1.0, 0.0,//p2
- 		 0.6, -0.3, 0.0, 0.0, 0.0, 1.0//p3
-		//T1
+		//x    y    z
+		// Cabeça
+		-0.2,  0.3, 0.0, //v0
+		-0.4,  0.5, 0.0, //v1
+		-0.4, -0.1, 0.0, //v2
+ 		-0.2, -0.3, 0.0, //v3
+		 0.2, -0.3, 0.0, //v5
+		 0.4, -0.1, 0.0, //v6
+		 0.4,  0.5, 0.0, //v7
+		 0.2,  0.3, 0.0, //v8
+		-0.2,  0.3, 0.0, //v9
+		// Nariz
+		-0.1,  0.0, 0.0, //v10
+		 0.0, -0.1, 0.0, //v11
+		 0.1,  0.0, 0.0, //v12
+		// Boca
+		-0.2, -0.1, 0.0, //v13
+		-0.1, -0.2, 0.0, //v14
+		 0.0, -0.1, 0.0, //v15
+		 0.1, -0.2, 0.0, //v16
+		 0.2, -0.1, 0.0, //v17
+		// Olhos (branco)
+		-0.3,  0.2, 0.0, //v18
+		-0.3,  0.0, 0.0, //v19
+		-0.1,  0.0, 0.0, //v20
+		-0.1,  0.2, 0.0, //v21
+		 0.1,  0.2, 0.0, //v22
+		 0.1,  0.0, 0.0, //v23
+		 0.3,  0.0, 0.0, //v24
+		 0.3,  0.2, 0.0, //v25
+		// Íris
+		-0.2,  0.1, 0.0, //v26
+		-0.2,  0.0, 0.0, //v27
+		-0.1,  0.0, 0.0, //v28
+		-0.1,  0.1, 0.0, //v29
+		 0.1,  0.1, 0.0, //v30
+		 0.1,  0.0, 0.0, //v31
+		 0.2,  0.0, 0.0, //v32
+		 0.2,  0.1, 0.0  //v33
 	};
 
 	GLuint VBO, VAO;
@@ -245,14 +292,8 @@ int setupGeometry()
 	// Se está normalizado (entre zero e um)
 	// Tamanho em bytes 
 	// Deslocamento a partir do byte zero 
-
-	// Atributo 0 - Posição dos vértices (x, y, z)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
-
-	// Atributo 1 - Cor dos vértices (r, g, b)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
 
 	// Observe que isso é permitido, a chamada para glVertexAttribPointer registrou o VBO como o objeto de buffer de vértice 
 	// atualmente vinculado - para que depois possamos desvincular com segurança
