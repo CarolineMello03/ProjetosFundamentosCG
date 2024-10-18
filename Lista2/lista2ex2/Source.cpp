@@ -36,6 +36,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int setupShader();
 int setupGeometry();
 
+void drawTriangle(GLuint shaderID, GLuint VAO, vec3 position, vec3 dimensions, float angle, vec3 color, vec3 axis = (vec3(0.0, 0.0, 1.0)));
+
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -79,7 +81,7 @@ int main()
 //#endif
 
 	// Criação da janela GLFW
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lista2_ex1", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lista2_ex2", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
 	// Fazendo o registro da função de callback para a janela GLFW
@@ -126,9 +128,11 @@ int main()
 	// Matriz de modelo: trasformações na geometria (objeto)
 	mat4 model = mat4(1); // matriz identidade
 	// Translação
-	model = translate(model, vec3(400.0, 300.0, 0.0));
+	//model = translate(model, vec3(400.0, 300.0, 0.0));
+	// Rotação            ângulo          eixo   x    y    z    
+	//model = rotate(model, radians(45.0f), vec3(0.0, 0.0, 1.0));
 	// Escala
-	model = scale(model, vec3(0.5, 0.5, 1.0));
+	//model = scale(model, vec3(0.5, 0.5, 1.0));
 
 	GLint modelLoc = glGetUniformLocation(shaderID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
@@ -148,24 +152,17 @@ int main()
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
-		glUniform4f(colorLoc, 0.0f, 0.0f, 1.0f, 1.0f); //enviando cor para variável uniform inputColor
+		//PRIMEIRO TRIÂNGULO
 
-		// Chamada de desenho - drawcall
-		// Poligono Preenchido - GL_TRIANGLES
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		drawTriangle(shaderID, VAO, vec3(400.0, 300.0, 0.0), vec3(1.0, 1.0, 1.0), 0.0, vec3(0.0f, 0.0f, 1.0f), vec3(0.0, 0.0, 1.0));
 
-		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f);
+		//SEGUNDO TRIÂNGULO
 
-		// Chamada de desenho - drawcall
-		// Contorno - GL_LINE_LOOP
-		glDrawArrays(GL_LINE_LOOP, 0, 3);
+		drawTriangle(shaderID, VAO, vec3(450.0, 350.0, 0.0), vec3(1.5, 1.5, 1.0), 90.0f, vec3(1.0f, 0.0f, 0.0f), vec3(0.0, 0.0, 1.0));
 
-		glUniform4f(colorLoc, 0.0f, 1.0f, 0.0f, 1.0f);
+		//TERCEIRO TRIÂNGULO
 
-		// Chamada de desenho - drawcall
-		// Pontos - GL_POINTS
-		glDrawArrays(GL_POINTS, 0, 3);
-
+		drawTriangle(shaderID, VAO, vec3(350.0, 350.0, 0.0), vec3(0.5, 0.5, 1.0), 270.0f, vec3(0.0f, 1.0f, 0.0f), vec3(0.0, 0.0, 1.0));
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
@@ -250,9 +247,9 @@ int setupGeometry()
 	GLfloat vertices[] = {
 		//x   y     z
 		//T0
-		 100, 100, 0.0, //v0
-		 200, 100, 0.0, //v1
- 		 150, 200, 0.0, //v2
+		 -100, -173.2, 0.0, //v0
+		  100, -173.2, 0.0, //v1
+ 		  0.0,    0.0, 0.0, //v2
 	};
 
 	GLuint VBO, VAO;
@@ -288,3 +285,22 @@ int setupGeometry()
 	return VAO;
 }
 
+void drawTriangle(GLuint shaderID, GLuint VAO, vec3 position, vec3 dimensions, float angle, vec3 color, vec3 axis)
+{
+	mat4 model = mat4(1); 
+	// Translação
+	model = translate(model, position);
+	// Rotação
+	model = rotate(model, radians(angle), axis);
+	// Escala
+	model = scale(model, dimensions);
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderID, "model"), 1, GL_FALSE, value_ptr(model));
+
+	glUniform4f(glGetUniformLocation(shaderID, "inputColor"), color.r, color.g, color.b, 1.0f);
+
+	// Chamada de desenho - drawcall
+	// Poligono Preenchido - GL_TRIANGLES
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+}
