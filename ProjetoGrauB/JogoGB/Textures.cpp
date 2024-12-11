@@ -185,6 +185,8 @@ int main()
 	Sprite gameOverSnow = initializeSprite(texID, vec3(imgWidth * 5, imgHeight * 5, 1.0), vec3(400, 300, 0));
 	texID = loadTexture("../Textures/cold_screen.png", imgWidth, imgHeight);
 	Sprite gameOverCold = initializeSprite(texID, vec3(imgWidth * 5, imgHeight * 5, 1.0), vec3(400, 300, 0));
+	texID = loadTexture("../Textures/win_screen.png", imgWidth, imgHeight);
+	Sprite gameWin = initializeSprite(texID, vec3(imgWidth * 5, imgHeight * 5, 1.0), vec3(400, 300, 0));
 
 	glUseProgram(shaderID);
 
@@ -231,26 +233,35 @@ int main()
 			spawnItem(item);
 		}
 		
-		if (!gameOver && missedItems < 5)
+		if (!gameOver && missedItems < 3)
 		{
-			// Fundo
-			glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
-			drawSprite(shaderID, background);
+			if (score >= 30)
+			{
+				// Fundo
+				glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
+				drawSprite(shaderID, gameWin);
+			}
+			else
+			{
+				// Fundo
+				glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
+				drawSprite(shaderID, background);
 			
-			// Personagem
-			moveSprite(shaderID, character);
-			updateSprite(shaderID, character);
-			drawSprite(shaderID, character);
+				// Personagem
+				moveSprite(shaderID, character);
+				updateSprite(shaderID, character);
+				drawSprite(shaderID, character);
 
-			// Bola de neve
-			glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
-			updateSnowball(shaderID, snowball);
-			drawSprite(shaderID, snowball);
+				// Bola de neve
+				glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
+				updateSnowball(shaderID, snowball);
+				drawSprite(shaderID, snowball);
 
-			// Itens
-			glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
-			updateItems(shaderID, item);
-			drawSprite(shaderID, item);
+				// Itens
+				glUniform2f(glGetUniformLocation(shaderID, "offsetTex"), 0.0, 0.0);
+				updateItems(shaderID, item);
+				drawSprite(shaderID, item);
+			}
 		}
 		else
 		{
