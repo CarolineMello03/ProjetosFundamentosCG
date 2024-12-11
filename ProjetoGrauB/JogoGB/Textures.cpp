@@ -611,7 +611,7 @@ void moveSprite(GLuint shaderID, Sprite &sprite)
 
 void updateSnowball(GLuint shaderID, Sprite &sprite)
 {
-	sprite.vel += 0.000001;
+	sprite.vel += 0.0000015;
 	if (sprite.pos.y > 50)
 	{
 		sprite.pos.y -= sprite.vel;
@@ -625,7 +625,7 @@ void updateSnowball(GLuint shaderID, Sprite &sprite)
 
 void updateItems(GLuint shaderID, Sprite & sprite)
 {
-	sprite.vel += 0.000001;
+	sprite.vel += 0.0000015;
 	if (sprite.pos.y > 50)
 	{
 		sprite.pos.y -= sprite.vel;
